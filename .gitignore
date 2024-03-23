@@ -1,5 +1,5 @@
-bin/*
-out/*
-.settings/*
-build-zip.bat
-CraftGuideResources.zip
+/.gradle/
+/.idea/
+/build/
+/run/*
+!run/.gitkeep
