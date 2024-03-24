@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import craftguide.CraftGuide_MITE;
 import net.minecraft.Minecraft;
 import net.minecraft.ItemStack;
 import net.minecraft.RenderHelper;
@@ -18,6 +19,7 @@ import uristqwerty.CraftGuide.CommonUtilities;
 import uristqwerty.CraftGuide.CraftGuide;
 import uristqwerty.CraftGuide.CraftGuideLog;
 import uristqwerty.CraftGuide.api.NamedTexture;
+import uristqwerty.CraftGuide.api.Renderer;
 import uristqwerty.CraftGuide.client.ui.Rendering.Overlay;
 import uristqwerty.gui_craftguide.minecraft.Gui;
 import uristqwerty.gui_craftguide.rendering.Renderable;
@@ -26,7 +28,7 @@ import uristqwerty.gui_craftguide.rendering.TexturedRect;
 import uristqwerty.gui_craftguide.texture.DynamicTexture;
 import uristqwerty.gui_craftguide.texture.Texture;
 
-public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.api.Renderer
+public class GuiRenderer extends RendererBase implements Renderer
 {
     private RenderItem itemRenderer = new RenderItem();
 	private Minecraft minecraft;
@@ -67,9 +69,9 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 	{
 		if(textureID != -1 && minecraft != null)
 		{
-//			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-//			minecraft.renderEngine.resetBoundTexture();
-			minecraft.renderEngine.bindTexture(textureID);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+			CraftGuide_MITE.renderEngine.resetBoundTexture();
+//			minecraft.mcResourceManager.bindTexture(textureID);
 		}
 	}
 
@@ -121,7 +123,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 		{
 			int w;
 
-			if(s.charAt(0) == '\u00a7')
+			if(s.charAt(0) == '§')
 			{
 				w = minecraft.fontRenderer.getStringWidth(s.substring(2));
 			}
@@ -222,7 +224,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 
         try
         {
-        	if(CommonUtilities.getItemDamage(itemStack) == CraftGuide.DAMAGE_WILDCARD)
+        	if(CommonUtilities.getItemSubtype(itemStack) == CraftGuide.Subtype_WILDCARD)
         	{
         		itemStack = fixedItemStack(itemStack);
         	}
@@ -243,7 +245,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
     			CraftGuideLog.log("Failed to render ItemStack {" + (
     					itemStack == null? "null" : (
     						"itemID = " + itemStack.itemID +
-    						", itemDamage = " + CommonUtilities.getItemDamage(itemStack) +
+    						", itemSubtype = " + CommonUtilities.getItemSubtype(itemStack) +
     						", stackSize = " + itemStack.stackSize)) +
     					"} (Further stack traces from this particular ItemStack instance will not be logged)");
     			CraftGuideLog.log(e);
@@ -297,7 +299,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 		if(stack == null)
 		{
 			stack = itemStack.copy();
-			stack.setItemDamage(0);
+			stack.setItemSubtype(0);
 			itemStackFixes.put(itemStack, stack);
 		}
 
@@ -313,10 +315,10 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 	{
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
-		x *= minecraft.displayHeight / (float)gui.height;
-		y *= minecraft.displayWidth / (float)gui.width;
-		height *= minecraft.displayHeight / (float)gui.height;
-		width *= minecraft.displayWidth / (float)gui.width;
+		x *= (minecraft.displayHeight / (float)gui.height);
+		y *= (minecraft.displayWidth / (float)gui.width);
+		height *= (minecraft.displayHeight / (float)gui.height);
+		width *= (minecraft.displayWidth / (float)gui.width);
 
 		GL11.glScissor(x, minecraft.displayHeight - y - height, width, height);
 	}
@@ -366,7 +368,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 		renderRect(x, y, width, height,
 				(color_rgb >> 16) & 0xff,
 				(color_rgb >>  8) & 0xff,
-				(color_rgb >>  0) & 0xff,
+				(color_rgb) & 0xff,
 				alpha);
 	}
 
@@ -420,7 +422,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 	    setGlColor(
 				((color >> 16) & 0xff) / 255.0,
 				((color >>  8) & 0xff) / 255.0,
-				((color >>  0) & 0xff) / 255.0,
+				((color) & 0xff) / 255.0,
 				((color >> 24) & 0xff) / 255.0);
 	}
 
@@ -447,7 +449,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 		}
 
 		List<String> list = new ArrayList<String>();
-		list.add("Err: Item #" + stack.itemID + ", damage " + CommonUtilities.getItemDamage(stack));
+		list.add("Err: Item #" + stack.itemID + ", subtype " + CommonUtilities.getItemSubtype(stack));
 		return list;
 	}
 
@@ -461,7 +463,7 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 	 */
 	private List<String> getTooltip(ItemStack stack)
 	{
-		List<String> list = stack.getTooltip(minecraft.thePlayer, false);
+		List<String> list = stack.getTooltip(minecraft.thePlayer, false, null);
 
 		if(minecraft.gameSettings.advancedItemTooltips)
 		{
@@ -495,10 +497,10 @@ public class GuiRenderer extends RendererBase implements uristqwerty.CraftGuide.
 			if(stack.getHasSubtypes())
 			{
 				builder.append("/");
-				builder.append(CommonUtilities.getItemDamage(stack));
+				builder.append(CommonUtilities.getItemSubtype(stack));
 			}
 
-			if(name.length() > 0)
+			if(!name.isEmpty())
 			{
 				builder.append(")");
 			}

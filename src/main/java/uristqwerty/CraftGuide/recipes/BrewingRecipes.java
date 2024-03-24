@@ -40,7 +40,7 @@ public class BrewingRecipes extends CraftGuideAPIObject implements RecipeProvide
                         82, 1, 79, 58));
 
         if (CraftGuide.hideMundanePotionRecipes) {
-            recipes.removeIf(recipe -> recipe[2] != null && CommonUtilities.getItemDamage(recipe[2]) == 8192);
+            recipes.removeIf(recipe -> recipe[2] != null && CommonUtilities.getItemSubtype(recipe[2]) == 8192);
         }
 
         for (ItemStack[] recipe : recipes) {
@@ -54,8 +54,8 @@ public class BrewingRecipes extends CraftGuideAPIObject implements RecipeProvide
         List<Item> ingredients = getIngredients();
 
         ItemStack water = new ItemStack(Item.potion);
-        List<ItemStack[]> potionRecipes = new LinkedList<ItemStack[]>();
-        Set<Integer> done = new HashSet<Integer>();
+        List<ItemStack[]> potionRecipes = new LinkedList<>();
+        Set<Integer> done = new HashSet<>();
         done.add(0);
 
         addRecipesForPotion(potionRecipes, water, ingredients, done);
@@ -64,14 +64,14 @@ public class BrewingRecipes extends CraftGuideAPIObject implements RecipeProvide
     }
 
     private void addRecipesForPotion(List<ItemStack[]> potionRecipes, ItemStack potion, List<Item> ingredients, Set<Integer> done) {
-        List<ItemStack> next = new LinkedList<ItemStack>();
+        List<ItemStack> next = new LinkedList<>();
 
         for (Item ingredient : ingredients) {
-            int result = PotionHelper.applyIngredient(CommonUtilities.getItemDamage(potion), ingredient.getPotionEffect());
+            int result = PotionHelper.applyIngredient(CommonUtilities.getItemSubtype(potion), ingredient.getPotionEffect());
 
-            if (result != 0 && result != CommonUtilities.getItemDamage(potion)) {
+            if (result != 0 && result != CommonUtilities.getItemSubtype(potion)) {
                 ItemStack output = new ItemStack(Item.potion);
-                output.setItemDamage(result);
+                output.setItemSubtype(result);
                 potionRecipes.add(new ItemStack[]{potion, new ItemStack(ingredient), output});
 
                 if (!done.contains(result)) {
@@ -87,7 +87,7 @@ public class BrewingRecipes extends CraftGuideAPIObject implements RecipeProvide
     }
 
     private List<Item> getIngredients() {
-        List<Item> ingredients = new LinkedList<Item>();
+        List<Item> ingredients = new LinkedList<>();
 
         for (Item item : Item.itemsList) {
             if (item != null && item.isPotionIngredient()) {

@@ -72,7 +72,7 @@ public class ItemSlotImplementationImplementation implements ItemSlotImplementat
 				renderer.renderRect(x, y, 16, 16, 0xff, 0xff, 0xff, 0x80);
 			}
 
-			if(CommonUtilities.getItemDamage(stack) == CraftGuide.DAMAGE_WILDCARD)
+			if(CommonUtilities.getItemSubtype(stack) == CraftGuide.Subtype_WILDCARD)
 			{
 				renderer.renderRect(x - 1, y - 1, 18, 18, overlayAny);
 			}
@@ -105,7 +105,7 @@ public class ItemSlotImplementationImplementation implements ItemSlotImplementat
 		{
 			return (ItemStack)data;
 		}
-		else if(data instanceof List && ((List)data).size() > 0)
+		else if(data instanceof List && !((List) data).isEmpty())
 		{
 			return item(((List)data).get(0));
 		}

@@ -1,7 +1,6 @@
 package uristqwerty.CraftGuide.client;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import net.minecraft.CompressedStreamTools;
 import net.minecraft.ItemStack;
@@ -26,7 +25,7 @@ public class BWRRecipeEncoder
 	}
 	public static void addStokedCauldronRecipe(ItemStack[] input, ItemStack[] output)
 	{
-		addRecipe("cauldronStoked", input, output);
+//		addRecipe("cauldronStoked", input, output);
 	}
 	public static void addCrucibleRecipe(ItemStack[] input, ItemStack[] output)
 	{
@@ -34,7 +33,7 @@ public class BWRRecipeEncoder
 	}
 	public static void addStokedCrucibleRecipe(ItemStack[] input, ItemStack[] output)
 	{
-		addRecipe("crucibleStoked", input, output);
+//		addRecipe("crucibleStoked", input, output);
 	}
 
 	public static void addMillstoneRecipe(Object[] input, Object[] output)
@@ -47,7 +46,7 @@ public class BWRRecipeEncoder
 	}
 	public static void addStokedCauldronRecipe(Object[] input, Object[] output)
 	{
-		addRecipe("cauldronStoked", input, output);
+//		addRecipe("cauldronStoked", input, output);
 	}
 	public static void addCrucibleRecipe(Object[] input, Object[] output)
 	{
@@ -55,7 +54,7 @@ public class BWRRecipeEncoder
 	}
 	public static void addStokedCrucibleRecipe(Object[] input, Object[] output)
 	{
-		addRecipe("crucibleStoked", input, output);
+//		addRecipe("crucibleStoked", input, output);
 	}
 
 	/**
@@ -121,9 +120,9 @@ public class BWRRecipeEncoder
 				itemCompound.setInteger("count", stack.stackSize);
 			}
 
-			if(CommonUtilities.getItemDamage(stack) != CraftGuide.DAMAGE_WILDCARD)
+			if(CommonUtilities.getItemSubtype(stack) != CraftGuide.Subtype_WILDCARD)
 			{
-				itemCompound.setInteger("damage", CommonUtilities.getItemDamage(stack));
+				itemCompound.setInteger("subtype", CommonUtilities.getItemSubtype(stack));
 			}
 
 			if(stack.hasTagCompound())

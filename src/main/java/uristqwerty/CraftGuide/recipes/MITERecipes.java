@@ -86,7 +86,7 @@ public class MITERecipes {
         for (ItemStack itemStack : list) {
             List<Integer> item = new ArrayList<>(2);
             item.add(0, itemStack.itemID);
-            item.add(1, itemStack.getItemDamage());
+            item.add(1, itemStack.getItemSubtype());
             int stackSize = itemStack.stackSize;
             if (hash.containsKey(item)) {
                 stackSize += hash.get(item);

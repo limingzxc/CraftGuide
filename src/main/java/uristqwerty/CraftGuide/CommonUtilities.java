@@ -5,8 +5,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+import craftguide.api.PinyinMatch;
 import net.minecraft.ItemStack;
+import net.minecraft.Minecraft;
 import uristqwerty.CraftGuide.api.StackInfo;
 import uristqwerty.CraftGuide.api.StackInfoSource;
 import uristqwerty.CraftGuide.api.Util;
@@ -37,11 +40,11 @@ public class CommonUtilities
 		}
 		else
 		{
-			String nameStr = "[" + names[0];
+			StringBuilder nameStr = new StringBuilder("[" + names[0]);
 
 			for(int i = 1; i < names.length; i++)
 			{
-				nameStr += ", " + names[i];
+				nameStr.append(", ").append(names[i]);
 			}
 
 			throw new NoSuchFieldException("Could not find a field with any of the following names: " + nameStr + "]");
@@ -62,7 +65,7 @@ public class CommonUtilities
 		{
 			if(item.getHasSubtypes())
 			{
-				idText = String.format(" (#%04d/%d)", item.itemID, getItemDamage(item));
+				idText = String.format(" (#%04d/%d)", item.itemID, getItemSubtype(item));
 			}
 			else
 			{
@@ -75,9 +78,9 @@ public class CommonUtilities
 
 	public static List<String> itemNames(ItemStack item)
 	{
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 
-		if(getItemDamage(item) == CraftGuide.DAMAGE_WILDCARD && item.getHasSubtypes())
+		if(getItemSubtype(item) == CraftGuide.Subtype_WILDCARD && item.getHasSubtypes())
 		{
 			ArrayList<ItemStack> subItems = new ArrayList<>();
 			item.getItem().getSubItems(item.itemID, null, subItems);
@@ -97,7 +100,7 @@ public class CommonUtilities
 
 	public static int countItemNames(ItemStack item)
 	{
-		if(getItemDamage(item) == CraftGuide.DAMAGE_WILDCARD && item.getHasSubtypes())
+		if(getItemSubtype(item) == CraftGuide.Subtype_WILDCARD && item.getHasSubtypes())
 		{
 			ArrayList<ItemStack> temp = new ArrayList<>();
 			item.getItem().getSubItems(item.itemID, null, temp);
@@ -178,9 +181,15 @@ public class CommonUtilities
 	{
 		for(String line: getExtendedItemStackText(item))
 		{
-			if(line != null && line.toLowerCase().contains(text))
+			if(line != null)
 			{
-				return true;
+				if (Objects.equals(Minecraft.theMinecraft.gameSettings.language, "zh_CN") &&
+						PinyinMatch.contains(line.toLowerCase(), text)) {
+					return true;
+				}
+				else if(line.toLowerCase().contains(text)) {
+					return true;
+				}
 			}
 		}
 
@@ -203,13 +212,13 @@ public class CommonUtilities
 		}
 	}
 
-	static Field itemDamageField = null;
+	static Field itemSubtypeField = null;
 
 	static
 	{
 		try
 		{
-			itemDamageField = getPrivateField(ItemStack.class, "itemDamage", "field_77991_e", "e", "field_4380");
+			itemSubtypeField = getPrivateField(ItemStack.class, "subtype");
 		}
 		catch(NoSuchFieldException e)
 		{
@@ -217,29 +226,25 @@ public class CommonUtilities
 		}
 	}
 
-	public static int getItemDamage(ItemStack stack)
+	public static int getItemSubtype(ItemStack stack)
 	{
 		if(stack.getItem() != null)
 		{
-			return stack.getItemDamage();
+			return stack.getItemSubtype();
 		}
 		else
 		{
-			if(itemDamageField != null)
+			if(itemSubtypeField != null)
 			{
 				try
 				{
-					return itemDamageField.getInt(stack);
+					return itemSubtypeField.getInt(stack);
 				}
-				catch(IllegalArgumentException e)
+				catch(IllegalArgumentException | IllegalAccessException e)
 				{
 					e.printStackTrace();
 				}
-				catch(IllegalAccessException e)
-				{
-					e.printStackTrace();
-				}
-			}
+            }
 
 			return 0;
 		}
@@ -254,9 +259,9 @@ public class CommonUtilities
 
 		return first.itemID == second.itemID
 			&& (
-				getItemDamage(first) == CraftGuide.DAMAGE_WILDCARD ||
-				getItemDamage(second) == CraftGuide.DAMAGE_WILDCARD ||
-				getItemDamage(first) == getItemDamage(second)
+				getItemSubtype(first) == CraftGuide.Subtype_WILDCARD ||
+				getItemSubtype(second) == CraftGuide.Subtype_WILDCARD ||
+				getItemSubtype(first) == getItemSubtype(second)
 			);
 	}
 
@@ -272,7 +277,7 @@ public class CommonUtilities
 				method.setAccessible(true);
 				return method;
 			}
-			catch(NoSuchMethodException e)
+			catch(NoSuchMethodException ignored)
 			{
 			}
 		}
@@ -283,11 +288,11 @@ public class CommonUtilities
 		}
 		else
 		{
-			String nameStr = "[" + names[0];
+			StringBuilder nameStr = new StringBuilder("[" + names[0]);
 
 			for(int i = 1; i < names.length; i++)
 			{
-				nameStr += ", " + names[i];
+				nameStr.append(", ").append(names[i]);
 			}
 
 			throw new NoSuchMethodException("Could not find a method with any of the following names: " + nameStr + "]");

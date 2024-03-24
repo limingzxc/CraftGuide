@@ -46,7 +46,7 @@ public class RecipeCache
 
 			if(!craftResults.containsKey(type))
 			{
-				craftResults.put(type, new ArrayList<CraftGuideRecipe>());
+				craftResults.put(type, new ArrayList<>());
 			}
 
 			craftResults.get(type).addAll(rawRecipes.get(key));
@@ -60,7 +60,7 @@ public class RecipeCache
 
 		if(firstReset)
 		{
-			currentTypes = new HashSet<CraftType>();
+			currentTypes = new HashSet<>();
 			currentTypes.addAll(craftingTypes);
 
 			for(ItemStack stack: generator.disabledTypes)
@@ -132,7 +132,7 @@ public class RecipeCache
 				continue;
 			}
 
-			if(CommonUtilities.getItemDamage(((ItemStack)item.getStack())) == CraftGuide.DAMAGE_WILDCARD)
+			if(CommonUtilities.getItemSubtype(((ItemStack)item.getStack())) == CraftGuide.Subtype_WILDCARD)
 			{
 				wild.put(item, 1);
 			}
@@ -244,7 +244,7 @@ public class RecipeCache
 
 	public void setTypes(Set<CraftType> types)
 	{
-		typeResults = new ArrayList<CraftGuideRecipe>();
+		typeResults = new ArrayList<>();
 		currentTypes = types;
 
 		if(types == null)

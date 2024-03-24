@@ -3,12 +3,9 @@ package uristqwerty.CraftGuide.client.mite;
 import java.lang.reflect.Field;
 
 import craftguide.CraftGuide_MITE;
-import net.minecraft.Minecraft;
-import net.minecraft.EntityPlayer;
-import net.minecraft.ITexturePack;
-import net.minecraft.TextureManager;
-import net.minecraft.Tessellator;
-import net.minecraft.TexturePackList;
+import net.minecraft.*;
+//import net.minecraft.ITexturePack;
+//import net.minecraft.TexturePackList;
 import uristqwerty.CraftGuide.CommonUtilities;
 import uristqwerty.CraftGuide.CraftGuide;
 import uristqwerty.CraftGuide.CraftGuideLog;
@@ -38,23 +35,23 @@ public class CraftGuideClient_MITE extends CraftGuideClient
 		return Minecraft.getMinecraft();
 	}
 
-	@Override
-	public ITexturePack getSelectedTexturePack()
-	{
-		TextureManager renderEngine = getMinecraftInstance().renderEngine;
-
-		try
-		{
-			TexturePackList texturePackList = (TexturePackList)CommonUtilities.getPrivateValue(TextureManager.class, renderEngine, "g", "texturePack", "field_78366_k", "field_1981");
-			return texturePackList.getSelectedTexturePack();
-		}
-		catch(SecurityException | IllegalAccessException | NoSuchFieldException | IllegalArgumentException e)
-		{
-			CraftGuideLog.log(e, "", true);
-		}
-
-        return null;
-	}
+//	@Override
+//	public ITexturePack getSelectedTexturePack()
+//	{
+//		ResourcePackRepository renderEngine = getMinecraftInstance().mcResourcePackRepository;
+//
+//		try
+//		{
+//			TexturePackList texturePackList = (TexturePackList)CommonUtilities.getPrivateValue(TextureManager.class, renderEngine, "g", "texturePack", "field_78366_k", "field_1981");
+//			return texturePackList.getSelectedTexturePack();
+//		}
+//		catch(SecurityException | IllegalAccessException | NoSuchFieldException | IllegalArgumentException e)
+//		{
+//			CraftGuideLog.log(e, "", true);
+//		}
+//
+//        return null;
+//	}
 
 	@Override
 	public void stopTessellating()

@@ -10,21 +10,21 @@ public class CraftType implements Comparable<CraftType>
 {
 	private static Map<Integer, Map<Integer, CraftType>> cache = new HashMap<Integer, Map<Integer, CraftType>>();
 	private static Map<ArrayList, CraftType> arrayListCache = new HashMap<ArrayList, CraftType>();
-	private int item, damage;
+	private int item, subtype;
 	private Object stack;
 
-	private CraftType(int itemID, int itemDamage)
+	private CraftType(int itemID, int itemSubtype)
 	{
 		item = itemID;
-		damage = itemDamage;
-		stack = new ItemStack(item, 1, damage);
+		subtype = itemSubtype;
+		stack = new ItemStack(item, 1, subtype);
 	}
 
 	private CraftType(ArrayList<ItemStack> items)
 	{
 		ItemStack itemStack = items.get(0);
 		item = itemStack.itemID;
-		damage = CommonUtilities.getItemDamage(itemStack);
+		subtype = CommonUtilities.getItemSubtype(itemStack);
 		stack = items;
 	}
 
@@ -34,7 +34,7 @@ public class CraftType implements Comparable<CraftType>
 		{
 			return getInstance((ItemStack)stack);
 		}
-		else if(stack instanceof ArrayList && ((ArrayList)stack).size() > 0)
+		else if(stack instanceof ArrayList && !((ArrayList) stack).isEmpty())
 		{
 			return getInstance((ArrayList)stack);
 		}
@@ -67,12 +67,12 @@ public class CraftType implements Comparable<CraftType>
 			cache.put(stack.itemID, map);
 		}
 
-		CraftType type = map.get(CommonUtilities.getItemDamage(stack));
+		CraftType type = map.get(CommonUtilities.getItemSubtype(stack));
 
 		if(type == null)
 		{
-			type = new CraftType(stack.itemID, CommonUtilities.getItemDamage(stack));
-			map.put(CommonUtilities.getItemDamage(stack), type);
+			type = new CraftType(stack.itemID, CommonUtilities.getItemSubtype(stack));
+			map.put(CommonUtilities.getItemSubtype(stack), type);
 		}
 
 		return type;
@@ -85,7 +85,7 @@ public class CraftType implements Comparable<CraftType>
 			return false;
 		}
 
-		return cache.get(stack.itemID).containsKey(CommonUtilities.getItemDamage(stack));
+		return cache.get(stack.itemID).containsKey(CommonUtilities.getItemSubtype(stack));
 	}
 
 	@Override
@@ -95,9 +95,9 @@ public class CraftType implements Comparable<CraftType>
 		{
 			return this.item > other.item? 1 : -1;
 		}
-		else if(this.damage != other.damage)
+		else if(this.subtype != other.subtype)
 		{
-			return this.damage > other.damage? 1 : -1;
+			return this.subtype > other.subtype? 1 : -1;
 		}
 		else if((this.stack instanceof ArrayList) != (other.stack instanceof ArrayList))
 		{
@@ -116,7 +116,7 @@ public class CraftType implements Comparable<CraftType>
 
 			if(stack instanceof ItemStack && type.stack instanceof ItemStack)
 			{
-				return type.item == this.item && type.damage == this.damage;
+				return type.item == this.item && type.subtype == this.subtype;
 			}
 			else if(stack instanceof ArrayList && type.stack instanceof ArrayList)
 			{
@@ -134,7 +134,7 @@ public class CraftType implements Comparable<CraftType>
 	@Override
 	public int hashCode()
 	{
-		return damage * 3571 + item;
+		return subtype * 3571 + item;
 	}
 
 	public Object getStack()

@@ -1,3 +1,0 @@
-BUILD		7
-VERSION		1.6.2
-OVERRIDE	1.6.2-modloader

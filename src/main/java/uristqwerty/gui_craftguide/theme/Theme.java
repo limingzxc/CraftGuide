@@ -27,10 +27,10 @@ public class Theme
 	public String description;
 	public File fileSource;
 	public SourceType fileSourceType;
-	public Map<String, List<Object[]>> images = new HashMap<String, List<Object[]>>();
+	public Map<String, List<Object[]>> images = new HashMap<>();
 	public String loadError = null;
 	public List<String> dependencies = new ArrayList<String>();
-	public Map<String, Texture> textures = new HashMap<String, Texture>();
+	public Map<String, Texture> textures = new HashMap<>();
 
 	private static Object[] errorImage = {"builtin", "error", null};
 

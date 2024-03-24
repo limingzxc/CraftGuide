@@ -24,7 +24,7 @@ repositories {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/modid.accesswidener")
+	accessWidenerPath = file("src/main/resources/craftguide.accesswidener")
 	mergedMinecraftJar()
 	setFML(new File("libs\\FishModLoader-v3.0.0.jar"))
 	mods {
@@ -46,6 +46,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.fmlMCPMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation files("libs/pinin-1.6.0-all.jar")
 //	implementation("org.spongepowered:mixin:0.8.5")
 
 	// FishModLoader API. And I probably want it anyway.
@@ -75,6 +76,7 @@ java {
 }
 
 jar {
+	from fileTree("$projectDir/extras/")
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}

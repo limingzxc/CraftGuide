@@ -196,13 +196,14 @@ public abstract class CraftGuideClient implements CraftGuideSide
 		return null;
 	}
 
-	public abstract ITexturePack getSelectedTexturePack();
-
-	public static ITexturePack getTexturePack()
+//	public abstract ITexturePack getSelectedTexturePack();
+//
+	public static Class<Object> getTexturePack()
 	{
 		if(CraftGuide.side instanceof CraftGuideClient)
 		{
-			return ((CraftGuideClient)CraftGuide.side).getSelectedTexturePack();
+			return Object.class;
+//			return ((CraftGuideClient)CraftGuide.side).getSelectedTexturePack();
 		}
 
 		return null;

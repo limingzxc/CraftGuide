@@ -1,5 +1,13 @@
 package uristqwerty.gui_craftguide.minecraft;
 
+import craftguide.CraftGuide_MITE;
+import craftguide.RenderEngine;
+import org.lwjgl.opengl.GL11;
+import uristqwerty.CraftGuide.CommonUtilities;
+import uristqwerty.gui_craftguide.rendering.RendererBase;
+import uristqwerty.gui_craftguide.texture.Texture;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,17 +19,6 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.imageio.ImageIO;
-
-import net.minecraft.Minecraft;
-import net.minecraft.TextureManager;
-
-import org.lwjgl.opengl.GL11;
-
-import uristqwerty.CraftGuide.CommonUtilities;
-import uristqwerty.gui_craftguide.rendering.RendererBase;
-import uristqwerty.gui_craftguide.texture.Texture;
 
 public class Image implements Texture
 {
@@ -44,26 +41,15 @@ public class Image implements Texture
 					Method getTexture;
 					try
 					{
-						getTexture = CommonUtilities.getPrivateMethod(TextureManager.class, new String[]{"f", "getTexture", "func_78341_b", "method_1428"}, String.class);
-						image.texID = (Integer)getTexture.invoke(Minecraft.getMinecraft().renderEngine, entry.getKey());
+						getTexture = CommonUtilities.getPrivateMethod(RenderEngine.class, new String[]{"f", "getTexture", "func_78341_b", "method_1428"}, String.class);
+						image.texID = ((Integer)getTexture.invoke(CraftGuide_MITE.renderEngine, entry.getKey()));
 					}
-					catch(NoSuchMethodException e)
+					catch(NoSuchMethodException | IllegalArgumentException | IllegalAccessException |
+                          InvocationTargetException e)
 					{
 						e.printStackTrace();
 					}
-					catch(IllegalArgumentException e)
-					{
-						e.printStackTrace();
-					}
-					catch(IllegalAccessException e)
-					{
-						e.printStackTrace();
-					}
-					catch(InvocationTargetException e)
-					{
-						e.printStackTrace();
-					}
-				}
+                }
 			}
 
 			needsInit = false;

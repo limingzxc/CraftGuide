@@ -106,7 +106,7 @@ public class FilterSelectGrid extends GuiScrollableGrid implements IRecipeCacheL
 
 			renderer.drawItemStack(stack, xOffset + 1, yOffset + 1);
 
-			if(CommonUtilities.getItemDamage(stack) == CraftGuide.DAMAGE_WILDCARD)
+			if(CommonUtilities.getItemSubtype(stack) == CraftGuide.Subtype_WILDCARD)
 			{
 				renderer.renderRect(xOffset, yOffset, 18, 18, overlayAny);
 			}

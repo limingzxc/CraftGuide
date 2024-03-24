@@ -48,7 +48,7 @@ public class SingleItemFilter implements ItemFilter
 	{
 		renderer.renderItemStack(x, y, comparison);
 
-		if(CommonUtilities.getItemDamage(comparison) == CraftGuide.DAMAGE_WILDCARD)
+		if(CommonUtilities.getItemSubtype(comparison) == CraftGuide.Subtype_WILDCARD)
 		{
 			renderer.renderRect(x - 1, y - 1, 18, 18, overlayAny);
 		}

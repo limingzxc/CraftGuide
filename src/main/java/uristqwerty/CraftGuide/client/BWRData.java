@@ -1,14 +1,9 @@
 package uristqwerty.CraftGuide.client;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import net.minecraft.CompressedStreamTools;
-import net.minecraft.ItemStack;
-import net.minecraft.NBTBase;
-import net.minecraft.NBTTagCompound;
-import net.minecraft.NBTTagList;
+import net.minecraft.*;
 import uristqwerty.CraftGuide.CraftGuide;
+
+import java.io.ByteArrayInputStream;
 
 public class BWRData
 {
@@ -61,11 +56,11 @@ public class BWRData
 
 	private static void readTag(NBTTagCompound tag)
 	{
-		millstone = readTag(tag, "millstone");
-		cauldron = readTag(tag, "cauldron");
-		cauldronStoked = readTag(tag, "cauldronStoked");
-		crucible = readTag(tag, "crucible");
-		crucibleStoked = readTag(tag, "crucibleStoked");
+//		millstone = readTag(tag, "millstone");
+//		cauldron = readTag(tag, "cauldron");
+//		cauldronStoked = readTag(tag, "cauldronStoked");
+//		crucible = readTag(tag, "crucible");
+//		crucibleStoked = readTag(tag, "crucibleStoked");
 
 		hasRecipes = true;
 	}
@@ -91,14 +86,12 @@ public class BWRData
 
 	private static Object[][] readRecipe(NBTBase tag)
 	{
-		if(!(tag instanceof NBTTagCompound))
+		if(!(tag instanceof NBTTagCompound tagCompound))
 		{
 			return null;
 		}
 
-		NBTTagCompound tagCompound = (NBTTagCompound)tag;
-
-		return new Object[][]{
+        return new Object[][]{
 				readItems(tagCompound.getTagList("input")),
 				readItems(tagCompound.getTagList("output")),
 		};
@@ -119,23 +112,21 @@ public class BWRData
 
 	private static Object readItem(NBTBase tag)
 	{
-		if(!(tag instanceof NBTTagCompound))
+		if(!(tag instanceof NBTTagCompound tagCompound))
 		{
 			return null;
 		}
 
-		NBTTagCompound tagCompound = (NBTTagCompound)tag;
-
-		if(tagCompound.getBoolean("isArray"))
+        if(tagCompound.getBoolean("isArray"))
 		{
 			return readItems(tagCompound.getTagList("contents"));
 		}
 
 		int itemID = getInt(tagCompound, "id", 0);
 		int itemCount = getInt(tagCompound, "count", 1);
-		int itemDamage = getInt(tagCompound, "damage", CraftGuide.DAMAGE_WILDCARD);
+		int itemSubtype = getInt(tagCompound, "subtype", CraftGuide.Subtype_WILDCARD);
 
-		ItemStack stack = new ItemStack(itemID, itemCount, itemDamage);
+		ItemStack stack = new ItemStack(itemID, itemCount, itemSubtype);
 
 		if(tagCompound.hasKey("tagData"))
 		{

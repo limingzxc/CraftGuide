@@ -1,5 +1,6 @@
 package uristqwerty.gui_craftguide.theme;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,9 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.List;
 
 import uristqwerty.CraftGuide.CraftGuideLog;
-import uristqwerty.CraftGuide.ITexturePack;
+//import uristqwerty.CraftGuide.ITexturePack;
 import uristqwerty.CraftGuide.client.CraftGuideClient;
 import uristqwerty.gui_craftguide.editor.TextureMeta;
 import uristqwerty.gui_craftguide.minecraft.Image;
@@ -71,21 +73,15 @@ public class ThemeManager
 			}
 		}
 
-		ITexturePack pack = CraftGuideClient.getTexturePack();
-		InputStream packThemes = null;
-		try
-		{
-			if(pack.func_98138_b("/CraftGuideThemes.txt", true))
-			{
-				packThemes = pack.getResourceAsStream("/CraftGuideThemes.txt");
-			}
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+//		ITexturePack pack = CraftGuideClient.getTexturePack();
+		Class<ThemeManager> pack = ThemeManager.class;
+//		if(pack.func_98138_b("/CraftGuideThemes.txt", true))
+//		{
+//				packThemes = pack.getResourceAsStream("/CraftGuideThemes.txt");
+//		}
+		InputStream packThemes = pack.getResourceAsStream("/CraftGuideThemes.txt");
 
-		if(packThemes != null)
+        if(packThemes != null)
 		{
 			CraftGuideLog.log("Loading themes from texture pack...");
 
@@ -128,7 +124,7 @@ public class ThemeManager
 		List<String> processed = new ArrayList<String>();
 
 		debug("Validating themes:");
-		while(themes.size() > 0)
+		while(!themes.isEmpty())
 		{
 			debug("  Looping over unvalidated themes:");
 			for(String themeID: themes.keySet())
@@ -205,7 +201,7 @@ public class ThemeManager
 				processed.add(themeID);
 			}
 
-			if(processed.size() > 0)
+			if(!processed.isEmpty())
 			{
 				debug("  " + processed.size() + " themes validated");
 
@@ -274,26 +270,11 @@ public class ThemeManager
 		else if(type.equalsIgnoreCase("file-jar"))
 		{
 			debug("            Searching classpath for '" + source + "'");
-			try
-			{
-				if(CraftGuideClient.getTexturePack().getResourceAsStream("/craftguide" + source) != null)
-				{
-					debug("              Found.");
-					return true;
-				}
-				else
-				{
-					debug("              Not found.");
-					return false;
-				}
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-				debug("              Not found.");
-				return false;
-			}
-		}
+            if (CraftGuideClient.getTexturePack() != null && CraftGuideClient.getTexturePack().getResourceAsStream("/craftguide" + source) != null) {
+                debug("              Found.");
+                return true;
+            }
+        }
 		else if(type.equalsIgnoreCase("file"))
 		{
 			debug("            Checking theme location for '" + source + "'");

@@ -73,7 +73,7 @@ public class MultipleItemFilter implements ItemFilter
 			ItemStack stack = comparison.get(0);
 			renderer.renderItemStack(x, y, stack);
 
-			if(CommonUtilities.getItemDamage(stack) == CraftGuide.DAMAGE_WILDCARD)
+			if(CommonUtilities.getItemSubtype(stack) == CraftGuide.Subtype_WILDCARD)
 			{
 				renderer.renderRect(x - 1, y - 1, 18, 18, overlayAny);
 			}
@@ -100,7 +100,7 @@ public class MultipleItemFilter implements ItemFilter
 
 				List<String> text;
 
-				if(CommonUtilities.getItemDamage(primaryItem) == CraftGuide.DAMAGE_WILDCARD)
+				if(CommonUtilities.getItemSubtype(primaryItem) == CraftGuide.Subtype_WILDCARD)
 				{
 					if(primaryItem.getHasSubtypes())
 					{
@@ -111,7 +111,7 @@ public class MultipleItemFilter implements ItemFilter
 					else
 					{
 						ItemStack alteredStack = primaryItem.copy();
-						alteredStack.setItemDamage(0);
+						alteredStack.setItemSubtype(0);
 						text = Util.instance.getItemStackText(alteredStack);
 					}
 				}
@@ -124,7 +124,7 @@ public class MultipleItemFilter implements ItemFilter
 				{
 					text.add("\u00a77Other items:");
 
-					if(CommonUtilities.getItemDamage(primaryItem) == CraftGuide.DAMAGE_WILDCARD && primaryItem.getHasSubtypes())
+					if(CommonUtilities.getItemSubtype(primaryItem) == CraftGuide.Subtype_WILDCARD && primaryItem.getHasSubtypes())
 					{
 						ArrayList<ItemStack> list = new ArrayList();
 						primaryItem.getItem().getSubItems(primaryItem.itemID, null, list);

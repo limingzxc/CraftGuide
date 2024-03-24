@@ -16,6 +16,7 @@ public class CraftGuide_MITE implements CraftGuideLoaderSide
 {
     private CraftGuide craftguide;
     private KeyBinding keyBinding;
+    public static RenderEngine renderEngine = new RenderEngine();
 
     @Override
     public boolean isModLoaded(String name)
@@ -63,7 +64,7 @@ public class CraftGuide_MITE implements CraftGuideLoaderSide
     @Override
     public File getConfigDir()
     {
-        return new File(Minecraft.mcDataDir, "config");
+        return new File(Minecraft.theMinecraft.mcDataDir, "config");
     }
 
     @Override

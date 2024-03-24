@@ -2,7 +2,6 @@ package uristqwerty.CraftGuide;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +37,7 @@ public class CraftGuide
 
 	private int itemCraftGuideID = 23361;
 
-	public static final int DAMAGE_WILDCARD = 32767;
+	public static final int Subtype_WILDCARD = 32767;
 
 	public void preInit()
 	{
@@ -83,11 +82,11 @@ public class CraftGuide
             throw new RuntimeException(e);
         }
 
-		loadModRecipes("MITE", "uristqwerty.CraftGuide.recipes.MITERecipes");
-        loadModRecipes("BTW", "uristqwerty.CraftGuide.recipes.BTWRecipes");
-		loadModRecipes("IC2", "uristqwerty.CraftGuide.recipes.IC2Recipes");
-		loadModRecipes("GregTech_Addon", "uristqwerty.CraftGuide.recipes.GregTechRecipes");
-		loadModRecipes("extendedWorkbench", "uristqwerty.CraftGuide.recipes.ExtendedWorkbench");
+//		loadModRecipes("MITE", "uristqwerty.CraftGuide.recipes.MITERecipes");
+//      loadModRecipes("BTW", "uristqwerty.CraftGuide.recipes.BTWRecipes");
+//		loadModRecipes("IC2", "uristqwerty.CraftGuide.recipes.IC2Recipes");
+//		loadModRecipes("GregTech_Addon", "uristqwerty.CraftGuide.recipes.GregTechRecipes");
+//		loadModRecipes("extendedWorkbench", "uristqwerty.CraftGuide.recipes.ExtendedWorkbench");
 
 		side.initNetworkChannels();
 	}

@@ -42,7 +42,7 @@ public class Recipe implements CraftGuideRecipe, CraftGuideRecipeExtra1
 			{
 				ItemStack old = displayStack(i);
 
-				this.recipe[i] = new ItemStack(old.itemID, 1, CommonUtilities.getItemDamage(old));
+				this.recipe[i] = new ItemStack(old.itemID, 1, CommonUtilities.getItemSubtype(old));
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class Recipe implements CraftGuideRecipe, CraftGuideRecipeExtra1
 		}
 		else if(recipe[index] instanceof ArrayList)
 		{
-			if(((ArrayList)recipe[index]).size() < 1)
+			if(((ArrayList) recipe[index]).isEmpty())
 			{
 				return null;
 			}
