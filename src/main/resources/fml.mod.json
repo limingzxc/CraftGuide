@@ -5,13 +5,13 @@
   "depends": {
     "fishmodloader": ">=3.0.0"
   },
-  "environment": "*",
+  "environment": "client",
   "name": "CraftGuide",
   "description": "CraftGuide is a Minecraft mod started back in October 2011, with the intention of providing the functionality of Risugami's Recipe Book, but a user interface which could better handle the absurd number of recipes encountered when playing with certain mods.",
   "authors": ["limingzxc"],
   "entrypoints": {
     "preLaunch": ["craftguide.CraftGuideMITEMod"],
-    "main": ["craftguide.CraftGuideMITEMod"]
+    "client": ["craftguide.CraftGuideMITEMod"]
   },
   "mixins": [
     "craftguide.mixin.json"
