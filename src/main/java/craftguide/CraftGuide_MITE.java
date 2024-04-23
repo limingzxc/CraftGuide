@@ -14,9 +14,18 @@ import java.util.Arrays;
 
 public class CraftGuide_MITE implements CraftGuideLoaderSide
 {
+    public static CraftGuide_MITE instance;
     private CraftGuide craftguide;
-    private KeyBinding keyBinding;
+    public KeyBinding keyBinding;
     public static RenderEngine renderEngine = new RenderEngine();
+
+    public static CraftGuide_MITE getInstance() {
+        if(instance == null) {
+            instance = new CraftGuide_MITE();
+            instance.load();
+        }
+        return instance;
+    }
 
     @Override
     public boolean isModLoaded(String name)
@@ -64,7 +73,7 @@ public class CraftGuide_MITE implements CraftGuideLoaderSide
     @Override
     public File getConfigDir()
     {
-        return new File(Minecraft.theMinecraft.mcDataDir, "config");
+        return new File(Minecraft.theMinecraft.mcDataDir, "configs");
     }
 
     @Override
@@ -122,13 +131,12 @@ public class CraftGuide_MITE implements CraftGuideLoaderSide
 
     public void checkKeybind()
     {
-        if(keyBinding.pressed && CraftGuide.enableKeybind)
+        if(Keyboard.isKeyDown(keyBinding.keyCode) && CraftGuide.enableKeybind)
         {
             Minecraft mc = Minecraft.getMinecraft();
             GuiScreen screen = mc.currentScreen;
 
-            if(screen == null)
-            {
+            if(screen == null) {
                 CraftGuide.side.openGUI(mc.thePlayer);
             }
             else if(screen instanceof GuiContainer)
@@ -137,11 +145,11 @@ public class CraftGuide_MITE implements CraftGuideLoaderSide
                 {
                     int x = Mouse.getX() * screen.width / mc.displayWidth;
                     int y = screen.height - (Mouse.getY() * screen.height / mc.displayHeight) - 1;
-                    int left = (Integer) CommonUtilities.getPrivateValue(GuiContainer.class, (GuiContainer)screen, "e", "n", "field_74198_m", "guiLeft", "field_1350");
+                    int left = (Integer)CommonUtilities.getPrivateValue(GuiContainer.class, (GuiContainer)screen, "e", "n", "field_74198_m", "guiLeft", "field_1350");
                     int top = (Integer)CommonUtilities.getPrivateValue(GuiContainer.class, (GuiContainer)screen, "o", "field_74197_n", "guiTop", "field_1351");
                     openRecipe((GuiContainer)screen, x - left, y - top);
                 }
-                catch(IllegalArgumentException | SecurityException | NoSuchFieldException | IllegalAccessException e)
+                catch(IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException e)
                 {
                     e.printStackTrace();
                 }

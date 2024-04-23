@@ -68,7 +68,7 @@ public class CraftGuide
 
 	public void init()
 	{
-		addItems();
+//		addItems();
 
 		try
 		{

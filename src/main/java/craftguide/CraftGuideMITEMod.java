@@ -2,11 +2,11 @@ package craftguide;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.xiaoyu233.fml.classloading.Mod;
 
+@Mod
 public class CraftGuideMITEMod implements ClientModInitializer, PreLaunchEntrypoint {
     public static String modId = "craftguide";
-    public static int modVerNum = 1000;
-    public static String modVerStr = "v1.0.0";
     public static String modName = "CraftGuide Mod";
 
     @Override

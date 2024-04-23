@@ -10,6 +10,7 @@ import java.util.Objects;
 import craftguide.api.PinyinMatch;
 import net.minecraft.ItemStack;
 import net.minecraft.Minecraft;
+import org.jetbrains.annotations.NotNull;
 import uristqwerty.CraftGuide.api.StackInfo;
 import uristqwerty.CraftGuide.api.StackInfoSource;
 import uristqwerty.CraftGuide.api.Util;

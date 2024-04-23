@@ -10,15 +10,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiAchievement.class)
 public class GuiAchievementMixin {
-    @Unique
-    CraftGuide_MITE instance;
 
     @Inject(method = "updateAchievementWindow()V", at = @At("HEAD"))
     private void updateAchievementWindow(CallbackInfo info) {
-        if (instance == null) {
-            instance = new CraftGuide_MITE();
-            instance.load();
-        }
+        CraftGuide_MITE instance = CraftGuide_MITE.getInstance();
         instance.checkKeybind();
     }
 }
