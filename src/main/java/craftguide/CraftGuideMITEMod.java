@@ -10,7 +10,8 @@ public class CraftGuideMITEMod implements ClientModInitializer, PreLaunchEntrypo
     public static String modName = "CraftGuide Mod";
 
     @Override
-    public void onInitializeClient() {}
+    public void onInitializeClient() {
+    }
 
     @Override
     public void onPreLaunch() {

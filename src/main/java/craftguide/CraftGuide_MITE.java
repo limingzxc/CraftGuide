@@ -1,5 +1,6 @@
 package craftguide;
 
+import craftguide.imixin.GameSettingsAccessor;
 import net.minecraft.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -10,13 +11,11 @@ import uristqwerty.CraftGuide.GuiCraftGuide;
 import uristqwerty.CraftGuide.client.mite.CraftGuideClient_MITE;
 
 import java.io.File;
-import java.util.Arrays;
 
 public class CraftGuide_MITE implements CraftGuideLoaderSide
 {
     public static CraftGuide_MITE instance;
     private CraftGuide craftguide;
-    public KeyBinding keyBinding;
     public static RenderEngine renderEngine = new RenderEngine();
 
     public static CraftGuide_MITE getInstance() {
@@ -121,17 +120,14 @@ public class CraftGuide_MITE implements CraftGuideLoaderSide
 
     public void initKeybind()
     {
-        keyBinding = new KeyBinding(StatCollector.translateToLocal("key.craftguide.open"), Keyboard.KEY_G);
-        GameSettings settings = Minecraft.getMinecraft().gameSettings;
-        KeyBinding[] keyBindings = settings.keyBindings;
-        keyBindings = Arrays.copyOf(keyBindings, keyBindings.length + 1);
-        keyBindings[keyBindings.length - 1] = keyBinding;
-        settings.keyBindings = keyBindings;
+
     }
 
     public void checkKeybind()
     {
-        if(Keyboard.isKeyDown(keyBinding.keyCode) && CraftGuide.enableKeybind)
+        if(Keyboard.isKeyDown(((GameSettingsAccessor) Minecraft.getMinecraft().gameSettings)
+                .getKeyBindingOpenCraftGuide().keyCode)
+                && CraftGuide.enableKeybind && !Minecraft.getMinecraft().isChatImposed())
         {
             Minecraft mc = Minecraft.getMinecraft();
             GuiScreen screen = mc.currentScreen;
